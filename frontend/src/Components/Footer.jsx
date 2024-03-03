@@ -1,7 +1,7 @@
 export default function Footer() {
-  return (
-    <div className="fixed-bottom">
-      {/* <div class="bg-dark bg-opacity-80 text-light">
+	return (
+		<div className="row">
+			{/* <div class="bg-dark bg-opacity-80 text-light">
         <div class="fluid-container upper-footer">
           <div class="row pt-3 px-auto">
             <div class="col-md-3 mx-auto">
@@ -62,13 +62,13 @@ export default function Footer() {
           </div>
         </div>
       </div> */}
-      <div class="bg-light-subtle p-2">
-        <div class="text-center">
-          © COPYRIGHT {new Date().getFullYear()} "INTERCITY EXPRESS TRAINS" BY{" "}
-          <span class="text-warning">DBMS PROJECT GROUP-13</span> ALL RIGHTS
-          RESERVED.
-        </div>
-      </div>
-    </div>
-  );
+			<div class="fixed-bottom bg-light-subtle p-2">
+				<div class="text-center">
+					© COPYRIGHT {new Date().getFullYear()} "INTERCITY EXPRESS TRAINS" BY{" "}
+					<span class="text-warning">DBMS PROJECT GROUP-13</span> ALL RIGHTS
+					RESERVED.
+				</div>
+			</div>
+		</div>
+	);
 }

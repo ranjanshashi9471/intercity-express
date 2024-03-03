@@ -1,29 +1,43 @@
 import "./App.css";
-import Signin from "./Components/Signin";
+import Signin from "./Pages/Signin";
 import NotFound from "./Components/NotFound";
 import MainHeader from "./Components/MainHeader";
-import Home from "./Components/Home";
-import { Route, Routes} from "react-router-dom";
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import Home from "./Pages/Home";
+import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "./Components/PrivateRoute";
+import Dashboard from "./Components/Dashboard";
+import { useState } from "react";
+import Signup from "./Pages/Signup";
 
 function App() {
-  return (
-    <div className="">
-      <Header/>
+	const [loggedIn, setLoggedIn] = useState(false);
+	return (
+		<div>
+			{/* <Header setLoggedIn={setLoggedIn} /> */}
 
-      <Routes>
-        <Route path="/" element={<MainHeader />}>
-          <Route index element={<Home />} />
-          <Route path="/login" element={<Signin text="Sign in" />} />
-          <Route path="/signup" element={<Signin text="Sign up" />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
+			<Routes>
+				<Route path="/" element={<MainHeader />}>
+					<Route index element={<Home />} />
+					<Route path="/login" element={<Signin setLoggedIn={setLoggedIn} />} />
+					<Route
+						path="/signup"
+						element={<Signup setLoggedIn={setLoggedIn} />}
+					/>
+					<Route path="*" element={<NotFound />} />
+					<Route
+						path="/dashboard"
+						element={
+							<PrivateRoute loggedIn={loggedIn}>
+								<Dashboard />
+							</PrivateRoute>
+						}
+					/>
+				</Route>
+			</Routes>
 
-      <Footer/>
-    </div>
-  );
+			{/* <Footer /> */}
+		</div>
+	);
 }
 
 export default App;

@@ -1,7 +1,9 @@
-export default function Dashboard(){
-    return (
-        <div>
-            This is Dashboard.
-        </div>
-    )
+import SearchTrain from "./SearchTrain";
+
+export default function Dashboard() {
+	return (
+		<div className="">
+			<SearchTrain />
+		</div>
+	);
 }

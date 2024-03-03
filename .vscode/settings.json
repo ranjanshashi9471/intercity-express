@@ -1,0 +1,7 @@
+{
+    "eslint.format.enable": true,
+    "eslint.run": "onSave",
+    "files.autoSave": "onFocusChange",
+    "eslint.ignoreUntitled": false,
+    "eslint.lintTask.enable": true
+}
