@@ -5,12 +5,18 @@ import MainHeader from "./Components/MainHeader";
 import Home from "./Pages/Home";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./Components/PrivateRoute";
-import Dashboard from "./Components/Dashboard";
+import Dashboard from "./Pages/Dashboard";
 import { useState } from "react";
 import Signup from "./Pages/Signup";
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
+	const [serverUserData, setServerUserData] = useState({
+		name: "",
+		email: "",
+		userType: "",
+	});
+
 	return (
 		<div>
 			{/* <Header setLoggedIn={setLoggedIn} /> */}

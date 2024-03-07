@@ -3,6 +3,13 @@ import { NavLink } from "react-router-dom";
 export default function Header() {
 	return (
 		<div className="">
+			{/* <div class="position-absolute z-0 w-100">
+				<img
+					src="https://images.pexels.com/photos/1793503/pexels-photo-1793503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+					alt="pict"
+					width="100%"
+				/>
+			</div> */}
 			<nav className="navbar navbar-expand-lg">
 				<div className="container-fluid fs-4">
 					<NavLink className="navbar-brand" to="/">
@@ -21,7 +28,7 @@ export default function Header() {
 						<span className="navbar-toggler-icon"></span>
 					</button>
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+						<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 							<li className="nav-item">
 								<NavLink className="nav-link active" aria-current="page" to="/">
 									Home
@@ -30,6 +37,11 @@ export default function Header() {
 							<li className="nav-item">
 								<NavLink className="nav-link" to="#">
 									About Us
+								</NavLink>
+							</li>
+							<li className="nav-item">
+								<NavLink className="nav-link" to="#">
+									Rail Help
 								</NavLink>
 							</li>
 							<li className="nav-item dropdown">
@@ -62,11 +74,6 @@ export default function Header() {
 										</NavLink>
 									</li>
 								</ul>
-							</li>
-							<li className="nav-item">
-								<NavLink className="nav-link" to="#">
-									Rail Help
-								</NavLink>
 							</li>
 						</ul>
 					</div>

@@ -2,7 +2,7 @@ export default function SearchTrain() {
 	let curr_date = new Date();
 	return (
 		<div className="row mt-3">
-			<div className="col-lg-3 p-5 rounded mx-auto bg-light shadow bg-opacity-25 mt-5">
+			<div className="col-lg-4 p-5 rounded mx-auto bg-light shadow bg-opacity-25 mt-5">
 				<h3>Search for trains on Source and Destination</h3>
 				<div>
 					<form>

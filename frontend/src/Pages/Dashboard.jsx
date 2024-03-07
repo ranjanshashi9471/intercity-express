@@ -1,12 +1,12 @@
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
-import Login from "../Components/Login";
+import SearchTrain from "../Components/SearchTrain";
 
-export default function SigninPage(props) {
+export default function Dashboard() {
 	return (
 		<div className="home-header">
 			<Header />
-			<Login setLoggedIn={props.setLoggedIn} />
+			<SearchTrain />
 			<Footer />
 		</div>
 	);

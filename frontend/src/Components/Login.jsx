@@ -2,15 +2,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import login from "../images/login.png";
+import axios from "axios";
 
 export default function Loginin(props) {
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
-		userType: "",
+		userType: "passengers",
 	});
 
-	const [data, setData] = useState([]);
+	// const [data, setData] = useState([]);
 	const navigate = useNavigate();
 
 	function handleChange(event) {
@@ -18,44 +19,37 @@ export default function Loginin(props) {
 		setFormData((prevData) => {
 			return { ...prevData, [name]: value };
 		});
-		// console.log(formData);
 	}
 
-	async function handlePostRequest() {
-		await fetch("/", {
-			accept: "application/json",
-		})
-			// .then((res) => res.text())
-			.then((res) => setData(res.data))
-			.catch((err) => console.log(err));
-		console.log(data);
-		// const response = await fetch("http://localhost:5000/login", {
-		// 	method: "post",
-		// 	mode: "cors",
-		// 	body: JSON.stringify(formData),
-		// });
-		// if (response) {
-		// 	props.setLoggedIn(true);
-		// 	toast.success("LoggedIn");
-		// 	navigate("/dashboard");
-		// } else {
-		// 	toast.error("Error logging in");
-		// 	props.setLoggedIn(false);
-		// 	navigate("/login");
-		// }
+	async function handleSubmit() {
+		const res = await axios.post("/login", {
+			mode: "cors",
+			data: formData,
+		});
+		if (res) {
+			console.log(res.data);
+			props.setLoggedIn(true);
+			toast.success("Success");
+			navigate("/dashboard");
+		} else {
+			console.log("Error in fetch Request");
+			toast.error("Error!");
+			navigate("/login");
+		}
 	}
 
 	return (
 		<div className="">
 			<div className="row m-3">
 				{/* <div className="col-lg-5 me-auto"></div> */}
-				<div className=" col-lg-4 mx-auto my-4 bg-light rounded shadow bg-opacity-25 signin_form">
+				<div className=" col-md-4 mx-auto my-4 p-4 bg-light rounded shadow bg-opacity-25 signin_form">
 					<div className="m-3">
 						<main class="form-signin w-100">
 							<form
+								id="loginform"
 								onSubmit={(event) => {
 									event.preventDefault();
-									handlePostRequest();
+									handleSubmit();
 								}}
 							>
 								<img
@@ -98,10 +92,12 @@ export default function Loginin(props) {
 										name="userType"
 										id="selectOptions"
 										placeholder="Choose a User Type."
+										onChange={handleChange}
+										value={formData.userType}
 									>
-										<option value={"passenger"}>Passenger</option>
-										<option value={"agent"}>Agent</option>
-										<option value={"admin/root"}>Admin/Root</option>
+										<option value={"passengers"}>Passenger</option>
+										<option value={"travel_agents"}>Agent</option>
+										<option value={"admin"}>Admin</option>
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>
