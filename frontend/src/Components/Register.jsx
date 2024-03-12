@@ -31,13 +31,14 @@ export default function Register(props) {
 				data: formData,
 			})
 			.then((res) => {
-				if (res.data === "success") {
-					props.setLoggedIn(true);
-					toast.success("Registered");
-					navigate("/dashboard");
-				} else {
-					toast.error("Registration failed!!");
-				}
+				console.log(res.data);
+				// if (res.data === "success") {
+				// 	props.setLoggedIn(true);
+				// 	toast.success("Registered");
+				// 	navigate("/dashboard");
+				// } else {
+				// 	toast.error("Registration failed!!");
+				// }
 			})
 			.catch((err) => {
 				console.log(err);

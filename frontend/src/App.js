@@ -23,7 +23,7 @@ function App() {
 
 			<Routes>
 				<Route path="/" element={<MainHeader />}>
-					<Route index element={<Home />} />
+					<Route index element={<Home loggedIn={loggedIn} setLoggedIn={setLoggedIn} serverUserData={serverUserData} setServerUserData={setServerUserData} />} />
 					<Route path="/login" element={<Signin setLoggedIn={setLoggedIn} />} />
 					<Route
 						path="/signup"

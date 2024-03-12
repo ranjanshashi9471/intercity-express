@@ -1,6 +1,6 @@
 import rail from "../images/rail.png";
 import { NavLink } from "react-router-dom";
-export default function Header() {
+export default function Header(props) {
 	return (
 		<div className="">
 			{/* <div class="position-absolute z-0 w-100">

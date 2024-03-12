@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql");
+const cors = require("cors");
 const bcrypt = require("bcrypt");
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,7 +38,7 @@ app.post("/login", (req, res, next) => {
 	res.status(200).json("success");
 });
 
-//---------------------------------------------------------signup Route--------------------------------------------------------//
+//---------------------------------------------------------signup Route-------------------------------------------------------------------------------------------//
 
 app.post("/signup", (req, res, next) => {
 	console.log(req.body);
@@ -59,32 +61,48 @@ app.post("/signup", (req, res, next) => {
 				console.log(err);
 			} else {
 				console.log(hash);
-				queryFunction(hash);
+				insertFunction(hash);
 			}
 			// Store hash in your password DB.
 		});
 	}
 
-	async function queryFunction(hashedPassword) {
-		await connection.query(
-			`INSERT INTO ${userType} values (UUID(), ?,?,?,?,?,?,?)`,
-			[name, age, email, gender, hashedPassword, contact_no, residence_city],
-			(error, result, field) => {
-				if (error) {
-					console.log(error);
-					res.json("failure");
-				} else {
-					console.log(result);
-					// console.log(field);
-					res.status(200).json("success");
-				}
+	async function insertFunction(hashedPassword) {
+		const checkUserExistsQuery = `SELECT * FROM ${userType} WHERE email_id = ${email} `;
+		await connection.query(checkUserExistsQuery, (err, res, fie) => {
+			if (res) {
+				res.status(200).json("User Exists");
+			} else if (err) {
+				console.log(err);
+				const insertArgs = [
+					name,
+					age,
+					email,
+					gender,
+					hashedPassword,
+					contact_no,
+					residence_city,
+				];
+				connection.query(
+					`INSERT INTO ${userType} values (REPLACE(UUID(),"-",""), ?,?,?,?,?,?,?)`,
+					insertArgs,
+					(error, result, field) => {
+						if (error) {
+							console.log(error);
+							res.json({ message: "Registration Failed!" });
+						} else {
+							console.log(result);
+							// console.log(field);
+							res.status(200).json({ message: "User Registered" });
+						}
+					}
+				);
 			}
-		);
+		});
 	}
-	// queryFunction();
 });
 
-//--------------------------------------------------------------------Listen Function-------------------------------------------------//
+//--------------------------------------------------------------------Listen Function-----------------------------------------------------------------------------------------//
 
 app.listen(5000, () => {
 	console.log("Server Live on port 5000");

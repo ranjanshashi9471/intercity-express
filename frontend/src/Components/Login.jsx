@@ -40,7 +40,7 @@ export default function Loginin(props) {
 
 	return (
 		<div className="">
-			<div className="row m-3">
+			<div className="row m-3 mt-5">
 				{/* <div className="col-lg-5 me-auto"></div> */}
 				<div className=" col-md-4 mx-auto my-4 p-4 bg-light rounded shadow bg-opacity-25 signin_form">
 					<div className="m-3">
@@ -97,7 +97,9 @@ export default function Loginin(props) {
 									>
 										<option value={"passengers"}>Passenger</option>
 										<option value={"travel_agents"}>Agent</option>
+										<option value={"staffs"}>Staff</option>
 										<option value={"admin"}>Admin</option>
+
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>
