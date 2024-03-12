@@ -30,17 +30,46 @@ connection.connect((err) => {
 //-----------------------------------------------Login Route------------------------------------------------------------------//
 
 app.post("/login", (req, res, next) => {
+	let passwordHash;
+	console.log(req.body.data);
 	const { email, password, userType } = req.body.data;
-	reqQuery = "SELECT password from " + userType + " WHERE email_id = " + email;
-	console.log(reqQuery);
-	// queryFunction(reqQuery);
-	console.log(req.body);
-	res.status(200).json("success");
+
+	connection.query(
+		`SELECT name,password from ${userType} WHERE email_id = ?`,
+		[email],
+		(error, result, fields) => {
+			if (result.length != 0) {
+				passwordHash = result[0].password;
+				userName = result[0].name;
+				checkUser(userName, password, passwordHash);
+			} else if (result.length == 0) {
+				res.status(200).json({ message: "usernotfound" });
+			} else if (error) {
+				res.status(200).json({ message: "errorcheckinguser" });
+			}
+		}
+	);
+
+	async function checkUser(userName, plainpassword, passwordHash) {
+		//... fetch user from a db etc.
+
+		const match = await bcrypt.compare(plainpassword, passwordHash);
+
+		if (match) {
+			res.status(200).json({
+				message: "success",
+				userName: userName,
+			});
+		} else {
+			res.status(200).json({ message: "passwordmismatch" });
+		}
+	}
 });
 
 //---------------------------------------------------------signup Route-------------------------------------------------------------------------------------------//
 
 app.post("/signup", (req, res, next) => {
+	let msg;
 	console.log(req.body);
 
 	const {
@@ -54,51 +83,63 @@ app.post("/signup", (req, res, next) => {
 		residence_city,
 	} = req.body.data;
 
-	hashingPassword();
+	checkExistingUser(userType, email);
+	// res.status(200).json(msg);
+
+	async function checkExistingUser(userTypeL, emailL) {
+		const checkUserExistsQuery = `SELECT * FROM ${userTypeL} WHERE email_id = ?`;
+
+		await connection.query(
+			checkUserExistsQuery,
+			[emailL],
+			(error, res1, fields) => {
+				if (res1.length != 0) {
+					console.log("User Exists Listing Down Users :");
+					console.log(res1);
+					res.status(200).json("userexists!");
+				} else {
+					hashingPassword();
+				}
+			}
+		);
+	}
+
 	async function hashingPassword() {
 		await bcrypt.hash(password, saltRounds, function (err, hash) {
 			if (err) {
 				console.log(err);
 			} else {
 				console.log(hash);
-				insertFunction(hash);
+				insertNewUser(hash);
 			}
 			// Store hash in your password DB.
 		});
 	}
 
-	async function insertFunction(hashedPassword) {
-		const checkUserExistsQuery = `SELECT * FROM ${userType} WHERE email_id = ${email} `;
-		await connection.query(checkUserExistsQuery, (err, res, fie) => {
-			if (res) {
-				res.status(200).json("User Exists");
-			} else if (err) {
-				console.log(err);
-				const insertArgs = [
-					name,
-					age,
-					email,
-					gender,
-					hashedPassword,
-					contact_no,
-					residence_city,
-				];
-				connection.query(
-					`INSERT INTO ${userType} values (REPLACE(UUID(),"-",""), ?,?,?,?,?,?,?)`,
-					insertArgs,
-					(error, result, field) => {
-						if (error) {
-							console.log(error);
-							res.json({ message: "Registration Failed!" });
-						} else {
-							console.log(result);
-							// console.log(field);
-							res.status(200).json({ message: "User Registered" });
-						}
-					}
-				);
+	async function insertNewUser(hashedPassword) {
+		const insertArgs = [
+			name,
+			age,
+			email,
+			gender,
+			hashedPassword,
+			contact_no,
+			residence_city,
+		];
+
+		await connection.query(
+			`INSERT INTO ${userType} values (REPLACE(UUID(),"-",""), ?,?,?,?,?,?,?)`,
+			insertArgs,
+			(error, result, field) => {
+				if (error) {
+					console.log(error);
+					res.json("registrationfailed");
+				} else {
+					console.log(result);
+					res.status(200).json("success");
+				}
 			}
-		});
+		);
 	}
 });
 

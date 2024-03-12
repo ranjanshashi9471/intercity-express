@@ -22,20 +22,27 @@ export default function Loginin(props) {
 	}
 
 	async function handleSubmit() {
-		const res = await axios.post("/login", {
-			mode: "cors",
-			data: formData,
-		});
-		if (res) {
-			console.log(res.data);
-			props.setLoggedIn(true);
-			toast.success("Success");
-			navigate("/dashboard");
-		} else {
-			console.log("Error in fetch Request");
-			toast.error("Error!");
-			navigate("/login");
-		}
+		await axios
+			.post("/login", {
+				mode: "cors",
+				data: formData,
+			})
+			.then((res) => {
+				if (res.data.message === "passwordmismatch") {
+					toast.error("Wrong Password");
+				} else if (res.data.message === "usernotfound") {
+					toast.error("Unregistered User");
+				} else if (res.data.message === "errorcheckinguser") {
+					toast.error("Db error");
+				} else {
+					toast.success("Loggedin");
+					props.setLoggedIn(true);
+					navigate("/dashboard");
+				}
+			})
+			.catch((err) => {
+				props.error("Request Error");
+			});
 	}
 
 	return (
@@ -99,7 +106,6 @@ export default function Loginin(props) {
 										<option value={"travel_agents"}>Agent</option>
 										<option value={"staffs"}>Staff</option>
 										<option value={"admin"}>Admin</option>
-
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>

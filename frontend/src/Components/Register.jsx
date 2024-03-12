@@ -31,14 +31,15 @@ export default function Register(props) {
 				data: formData,
 			})
 			.then((res) => {
-				console.log(res.data);
-				// if (res.data === "success") {
-				// 	props.setLoggedIn(true);
-				// 	toast.success("Registered");
-				// 	navigate("/dashboard");
-				// } else {
-				// 	toast.error("Registration failed!!");
-				// }
+				if (res.data === "success") {
+					props.setLoggedIn(true);
+					toast.success("Success");
+					navigate("/dashboard");
+				} else if (res.data === "userexists!") {
+					toast.error("User Already Registered");
+				} else {
+					toast.error("Server Error!!");
+				}
 			})
 			.catch((err) => {
 				console.log(err);

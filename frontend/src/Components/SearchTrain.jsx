@@ -1,11 +1,22 @@
+import { useState } from "react";
+
 export default function SearchTrain() {
 	let curr_date = new Date();
+	const [searchData, setSearchData] = useState({
+		startStn: "",
+		endStn: "",
+		date: "",
+	});
+
+	function handleSubmit(event) {
+		event.preventDefault();
+	}
 	return (
 		<div className="row mt-3">
 			<div className="col-lg-4 p-5 rounded mx-auto bg-light shadow bg-opacity-25 mt-5">
 				<h3>Search for trains on Source and Destination</h3>
 				<div>
-					<form>
+					<form onSubmit={handleSubmit}>
 						<div class="form-floating mx-auto mb-2">
 							<input
 								type="text"
