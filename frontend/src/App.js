@@ -2,12 +2,15 @@ import "./App.css";
 import Signin from "./Pages/Signin";
 import NotFound from "./Components/NotFound";
 import MainHeader from "./Components/MainHeader";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 import Home from "./Pages/Home";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./Components/PrivateRoute";
 import Dashboard from "./Pages/Dashboard";
 import { useState } from "react";
 import Signup from "./Pages/Signup";
+import UserProfile from "./Pages/UserProfile";
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -15,33 +18,52 @@ function App() {
 		name: "",
 		email: "",
 		userType: "",
+		id: "",
 	});
 
 	return (
-		<div>
-			{/* <Header setLoggedIn={setLoggedIn} /> */}
+		<div className="home-header">
+			<Header
+				loggedIn={loggedIn}
+				setLoggedIn={setLoggedIn}
+				serverUserData={serverUserData}
+				setServerUserData={setServerUserData}
+			/>
 
 			<Routes>
 				<Route path="/" element={<MainHeader />}>
-					<Route index element={<Home loggedIn={loggedIn} setLoggedIn={setLoggedIn} serverUserData={serverUserData} setServerUserData={setServerUserData} />} />
-					<Route path="/login" element={<Signin setLoggedIn={setLoggedIn} />} />
+					<Route index element={<Home />} />
 					<Route
-						path="/signup"
-						element={<Signup setLoggedIn={setLoggedIn} />}
+						path="/login"
+						element={
+							<Signin
+								setLoggedIn={setLoggedIn}
+								setServerUserData={setServerUserData}
+							/>
+						}
+					/>
+					<Route path="/signup" element={<Signup />} />
+					<Route
+						path="/userprofile"
+						element={
+							<PrivateRoute loggedIn={loggedIn}>
+								<UserProfile userData={serverUserData} />
+							</PrivateRoute>
+						}
 					/>
 					<Route path="*" element={<NotFound />} />
 					<Route
 						path="/dashboard"
 						element={
 							<PrivateRoute loggedIn={loggedIn}>
-								<Dashboard />
+								<Dashboard serverUserData={serverUserData} />
 							</PrivateRoute>
 						}
 					/>
 				</Route>
 			</Routes>
 
-			{/* <Footer /> */}
+			<Footer />
 		</div>
 	);
 }

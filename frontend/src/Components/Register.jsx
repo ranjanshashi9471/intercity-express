@@ -4,7 +4,7 @@ import login from "../images/add-user.png";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
-export default function Register(props) {
+export default function Register() {
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -32,9 +32,8 @@ export default function Register(props) {
 			})
 			.then((res) => {
 				if (res.data === "success") {
-					props.setLoggedIn(true);
 					toast.success("Success");
-					navigate("/dashboard");
+					navigate("/login");
 				} else if (res.data === "userexists!") {
 					toast.error("User Already Registered");
 				} else {
@@ -49,9 +48,9 @@ export default function Register(props) {
 
 	return (
 		<div>
-			<div className="row my-5 mx-5">
+			<div className="row mx-5">
 				{/* <div className="col-lg-5 me-auto"></div> */}
-				<div className=" col-lg-5 mx-auto bg-light my-5 rounded shadow bg-opacity-25 signin_form">
+				<div className=" col-lg-5 ms-auto bg-light my-5 rounded shadow bg-opacity-25 signin_form">
 					<div className="p-4 py-5">
 						<main class="form-signin w-100">
 							<form
@@ -80,7 +79,6 @@ export default function Register(props) {
 									>
 										<option value={"passengers"}>Passenger</option>
 										<option value={"travel_agents"}>Agent</option>
-										<option value={"admin"}>Admin</option>
 										<option value={"staffs"}>Staff</option>
 									</select>
 									<label for="selectOptions">Type of user</label>

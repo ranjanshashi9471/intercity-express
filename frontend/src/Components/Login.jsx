@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import login from "../images/login.png";
 import axios from "axios";
 
-export default function Loginin(props) {
+export default function Login(props) {
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -37,19 +37,23 @@ export default function Loginin(props) {
 				} else {
 					toast.success("Loggedin");
 					props.setLoggedIn(true);
+					// const { id, name, email, userType } = res.data.userData;
+					console.log(res.data.userData);
+					props.setServerUserData(res.data.userData);
 					navigate("/dashboard");
 				}
 			})
 			.catch((err) => {
-				props.error("Request Error");
+				// toast.error(err);
+				console.log(err);
 			});
 	}
 
 	return (
-		<div className="">
+		<div className="text-dark">
 			<div className="row m-3 mt-5">
 				{/* <div className="col-lg-5 me-auto"></div> */}
-				<div className=" col-md-4 mx-auto my-4 p-4 bg-light rounded shadow bg-opacity-25 signin_form">
+				<div className=" col-md-4 ms-auto my-4 p-4 bg-light rounded shadow bg-opacity-25 signin_form">
 					<div className="m-3">
 						<main class="form-signin w-100">
 							<form

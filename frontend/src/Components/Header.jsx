@@ -1,5 +1,7 @@
 import rail from "../images/rail.png";
 import { NavLink } from "react-router-dom";
+import Logout from "./Logout";
+import HeaderLogin from "./HeaderLogin";
 export default function Header(props) {
 	return (
 		<div className="">
@@ -52,27 +54,18 @@ export default function Header(props) {
 									data-bs-toggle="dropdown"
 									aria-expanded="false"
 								>
-									Username
+									Account
+									{/* {props.loggedIn ? props.serverUserData.name : "Username"} */}
 								</a>
 								<ul className="dropdown-menu">
-									<li>
-										<NavLink className="nav-link mx-1 py-0" to="/login">
-											Login
-										</NavLink>
-									</li>
-									<li>
-										<NavLink className="nav-link mx-1 py-0" to="/signup">
-											Sign up
-										</NavLink>
-									</li>
-									<li>
-										<hr className="dropdown-divider my-1"></hr>
-									</li>
-									<li>
-										<NavLink className="nav-link mx-1 py-0" to="#">
-											Log out
-										</NavLink>
-									</li>
+									{props.loggedIn ? (
+										<Logout
+											setLoggedIn={props.setLoggedIn}
+											name={props.serverUserData.name}
+										/>
+									) : (
+										<HeaderLogin />
+									)}
 								</ul>
 							</li>
 						</ul>
