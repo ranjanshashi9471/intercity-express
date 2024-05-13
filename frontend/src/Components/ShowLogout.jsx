@@ -11,9 +11,6 @@ export default function Logout(props) {
 	return (
 		<div>
 			<li>
-				<p className="mx-3 my-0 fs-5">{props.name}</p>
-			</li>
-			<li>
 				<NavLink className="nav-link mx-1 py-0" to="/userprofile">
 					Account Info
 				</NavLink>

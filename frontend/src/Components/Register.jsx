@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import login from "../images/add-user.png";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -48,10 +48,9 @@ export default function Register() {
 
 	return (
 		<div>
-			<div className="row mx-5">
-				{/* <div className="col-lg-5 me-auto"></div> */}
-				<div className=" col-lg-5 ms-auto bg-light my-5 rounded shadow bg-opacity-25 signin_form">
-					<div className="p-4 py-5">
+			<div className="row mx-5 mt-4">
+				<div className=" col-lg-5 ms-auto bg-dark border rounded shadow bg-opacity-50 signin_form">
+					<div className="px-4 my-4">
 						<main class="form-signin w-100">
 							<form
 								onSubmit={(event) => {
@@ -59,15 +58,18 @@ export default function Register() {
 									handleSubmit();
 								}}
 							>
-								<img
-									className="mb-2"
-									src={login}
-									alt=""
-									width="72"
-									height="57"
-								/>
-								<h1 class="h3 mb-3 fw-normal text-center">Please Signup</h1>
-								<div class="form-floating mb-2">
+								<div className="">
+									<img
+										className="mb-2"
+										src={login}
+										alt=""
+										width="72"
+										height="57"
+									/>
+								</div>
+
+								<h1 class="h3 mb-3 fw-normal text-warning">Please Signup</h1>
+								<div class="form-floating mb-3">
 									<select
 										required
 										class="form-control"
@@ -79,7 +81,7 @@ export default function Register() {
 									>
 										<option value={"passengers"}>Passenger</option>
 										<option value={"travel_agents"}>Agent</option>
-										<option value={"staffs"}>Staff</option>
+										{/* <option value={"staffs"}>Staff</option> */}
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>
@@ -96,7 +98,7 @@ export default function Register() {
 									<label htmlfor="floatingName">Name</label>
 								</div>
 
-								<div className="row mt-2">
+								<div className="row mt-3">
 									<div className="col-md-6 me-auto">
 										<div className="form-control">
 											<label className="form-label" htmlFor="gender">
@@ -119,7 +121,7 @@ export default function Register() {
 										</div>
 									</div>
 
-									<div className="col-md-6 ms-auto">
+									<div className="col-md-6 mt-1 ms-auto">
 										<div className="form-control">
 											<label className="form-label" htmlFor="age">
 												Age<sup className="text-danger">*</sup>
@@ -138,7 +140,7 @@ export default function Register() {
 										</div>
 									</div>
 								</div>
-								<div className="row mt-2">
+								<div className="row mt-3">
 									<div className="col-md-6 me-auto">
 										<div className="form-control">
 											<label className="form-label" htmlFor="residence">
@@ -158,7 +160,7 @@ export default function Register() {
 										</div>
 									</div>
 
-									<div className="col-md-6 ms-auto">
+									<div className="col-md-6 mt-1 ms-auto">
 										<div className="form-control">
 											<label className="form-label" htmlFor="contact">
 												Contact no<sup className="text-danger">*</sup>
@@ -168,17 +170,18 @@ export default function Register() {
 												type="number"
 												name="contact_no"
 												id="contact"
-												placeholder="Contact no with +91"
+												placeholder="10 Digit contact no"
 												className="form-control"
 												onChange={handleChange}
 												value={formData.contact_no}
+												pattern="[1-9]{1}[0-9]{9}"
 												required
 											/>
 										</div>
 									</div>
 								</div>
 
-								<div class="form-floating mt-2">
+								<div class="form-floating mt-3">
 									<input
 										type="email"
 										name="email"
@@ -190,7 +193,7 @@ export default function Register() {
 									/>
 									<label for="floatingInput">Email address</label>
 								</div>
-								<div class="form-floating mt-2">
+								<div class="form-floating mt-3">
 									<input
 										name="password"
 										value={formData.password}
@@ -203,9 +206,28 @@ export default function Register() {
 									<label for="floatingPassword">Password</label>
 								</div>
 
-								<button class="btn btn-dark w-100 py-2 mt-3" type="submit">
-									Signup
-								</button>
+								<div className="mt-3">
+									<button class="btn btn-success w-100 py-2" type="submit">
+										Signup
+									</button>
+									<div className="row mx-auto mt-1">
+										<div className="col-lg-4 text-light">
+											<hr></hr>
+										</div>
+										<div className="col-lg-4 mt-1">
+											<p className="text-warning">Already registered</p>
+										</div>
+										<div className="col text-light">
+											<hr></hr>
+										</div>
+									</div>
+									<NavLink
+										className="btn btn-outline-light w-100 py-2"
+										to="/login"
+									>
+										Signin
+									</NavLink>
+								</div>
 							</form>
 						</main>
 					</div>

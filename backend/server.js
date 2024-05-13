@@ -28,13 +28,38 @@ connection.connect((err) => {
 	}
 });
 
+//---------------------------------------------------------Get Stations--------------------------------------------------------------------------------//
+
+app.get("/stations", (req, res) => {
+	async function getStations() {
+		await connection.query(
+			"SELECT station_code, station_name from stations",
+			(error, result, fields) => {
+				if (error) {
+					res.status(200).json({
+						message: "error",
+						stations: {},
+					});
+				} else {
+					res.status(200).json({
+						message: "success",
+						stations: result,
+					});
+				}
+			}
+		);
+	}
+	getStations();
+});
+
 //---------------------------------------------------------Searching Train---------------------------------------------------------//
 
 app.post("/searchtrain", (req, res) => {
 	const { startStn, endStn, date } = req.body.data;
+	console.log(req.body.data);
 	connection.query(
-		`SELECT t.*,r.*, dt.* from trains t,routes r, (SELECT * FROM train_schedule WHERE station_code in(?,?)) dt where dt.train_no=t.train_no and dt.route_no=r.route_no`,
-		[startStn, endStn],
+		`select dttt.*, r.route_name, r.time_taken, r.total_dist_km from routes r, (select dtt.*, t.train_name from trains t, (select ts.route_no, ts.train_no, dt.station_code as strtStn, ts.station_code as destStn, dt.EDT, ts.EAT from train_schedule ts,(select * from train_schedule where station_code = ? and EAT is null) dt where dt.train_no=ts.train_no and ts.EDT is null) dtt where dtt.train_no = t.train_no) dttt where dttt.route_no = r.route_no;`,
+		[startStn],
 		(error, result, fields) => {
 			if (error) {
 				console.log(error);
@@ -111,7 +136,7 @@ app.post("/login", (req, res, next) => {
 	}
 });
 
-//---------------------------------------------------------signup Route-------------------------------------------------------------------------------------------//
+//---------------------------------------------------------signup Route------------------------------------------------------------------------------------//
 
 app.post("/signup", (req, res, next) => {
 	let msg;
@@ -188,7 +213,7 @@ app.post("/signup", (req, res, next) => {
 	}
 });
 
-//--------------------------------------------------------------------Listen Function-----------------------------------------------------------------------------------------//
+//--------------------------------------------------------------------Listen function-----------------------------------------------------------------------------------------//
 
 app.listen(5000, () => {
 	console.log("Server Live on port 5000");

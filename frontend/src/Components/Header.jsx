@@ -1,22 +1,16 @@
 import rail from "../images/rail.png";
 import { NavLink } from "react-router-dom";
-import Logout from "./Logout";
-import HeaderLogin from "./HeaderLogin";
+import ShowLogout from "./ShowLogout";
+import ShowLogin from "./ShowLogin";
+
 export default function Header(props) {
 	return (
 		<div className="">
-			{/* <div class="position-absolute z-0 w-100">
-				<img
-					src="https://images.pexels.com/photos/1793503/pexels-photo-1793503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-					alt="pict"
-					width="100%"
-				/>
-			</div> */}
-			<nav className="navbar navbar-expand-lg">
+			<nav className="navbar navbar-expand-lg text-light">
 				<div className="container-fluid fs-4">
 					<NavLink className="navbar-brand" to="/">
 						<img className="" src={rail} alt="logo-img" width={"50"} />
-						<strong className="fs-3 text-info-emphasis"> IET</strong>
+						<strong className="fs-2 text-light"> IET</strong>
 					</NavLink>
 					<button
 						className="navbar-toggler"
@@ -32,7 +26,7 @@ export default function Header(props) {
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 							<li className="nav-item">
-								<NavLink className="nav-link active" aria-current="page" to="/">
+								<NavLink className="nav-link" aria-current="page" to="/">
 									Home
 								</NavLink>
 							</li>
@@ -41,11 +35,9 @@ export default function Header(props) {
 									About Us
 								</NavLink>
 							</li>
-							<li className="nav-item">
-								<NavLink className="nav-link" to="#">
-									Rail Help
-								</NavLink>
-							</li>
+							{/* <li className="nav-item">
+								<NavLink className="nav-link" to="#"></NavLink>
+							</li> */}
 							<li className="nav-item dropdown">
 								<a
 									className="nav-link dropdown-toggle"
@@ -54,17 +46,13 @@ export default function Header(props) {
 									data-bs-toggle="dropdown"
 									aria-expanded="false"
 								>
-									Account
-									{/* {props.loggedIn ? props.serverUserData.name : "Username"} */}
+									{props.loggedIn ? props.serverUserData.name : "Username"}
 								</a>
-								<ul className="dropdown-menu">
+								<ul className="dropdown-menu bg-dark bg-opacity-75">
 									{props.loggedIn ? (
-										<Logout
-											setLoggedIn={props.setLoggedIn}
-											name={props.serverUserData.name}
-										/>
+										<ShowLogout setLoggedIn={props.setLoggedIn} />
 									) : (
-										<HeaderLogin />
+										<ShowLogin />
 									)}
 								</ul>
 							</li>

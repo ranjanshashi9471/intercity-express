@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import login from "../images/login.png";
+import login from "../images/log-in.png";
 import axios from "axios";
 
 export default function Login(props) {
@@ -53,7 +53,7 @@ export default function Login(props) {
 		<div className="text-dark">
 			<div className="row m-3 mt-5">
 				{/* <div className="col-lg-5 me-auto"></div> */}
-				<div className=" col-md-4 ms-auto my-4 p-4 bg-light rounded shadow bg-opacity-25 signin_form">
+				<div className=" col-md-4 ms-auto my-4 p-4 bg-secondary rounded shadow bg-opacity-50 signin_form">
 					<div className="m-3">
 						<main class="form-signin w-100">
 							<form
@@ -70,33 +70,9 @@ export default function Login(props) {
 									width="72"
 									height="57"
 								/>
-								<h1 class="h3 mb-3 fw-normal text-center">Please Signin</h1>
+								<h1 class="h3 mb-3 fw-normal text-warning">Please Signin</h1>
 
-								<div class="form-floating">
-									<input
-										name="email"
-										value={formData.email}
-										onChange={handleChange}
-										type="email"
-										class="form-control"
-										id="floatingInput"
-										placeholder="name@example.com"
-									/>
-									<label for="floatingInput">Email address</label>
-								</div>
-								<div class="form-floating mt-2">
-									<input
-										type="password"
-										name="password"
-										value={formData.password}
-										onChange={handleChange}
-										class="form-control"
-										id="floatingPassword"
-										placeholder="Password"
-									/>
-									<label for="floatingPassword">Password</label>
-								</div>
-								<div class="form-floating mt-2">
+								<div class="form-floating mb-3">
 									<select
 										required
 										class="form-control"
@@ -109,11 +85,37 @@ export default function Login(props) {
 										<option value={"passengers"}>Passenger</option>
 										<option value={"travel_agents"}>Agent</option>
 										<option value={"staffs"}>Staff</option>
-										<option value={"admin"}>Admin</option>
+										{/* <option value={"admin"}>Admin</option> */}
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>
-								<div class="form-check text-start my-3 ms-1">
+
+								<div class="form-floating mb-3">
+									<input
+										name="email"
+										value={formData.email}
+										onChange={handleChange}
+										type="email"
+										class="form-control"
+										id="floatingInput"
+										placeholder="name@example.com"
+									/>
+									<label for="floatingInput">Email address</label>
+								</div>
+								<div class="form-floating mt-3">
+									<input
+										type="password"
+										name="password"
+										value={formData.password}
+										onChange={handleChange}
+										class="form-control"
+										id="floatingPassword"
+										placeholder="Password"
+									/>
+									<label for="floatingPassword">Password</label>
+								</div>
+
+								{/* <div class="form-check text-start my-3 ms-1">
 									<input
 										class="form-check-input"
 										type="checkbox"
@@ -123,10 +125,27 @@ export default function Login(props) {
 									<label class="form-check-label" for="flexCheckDefault">
 										Remember me
 									</label>
+								</div> */}
+								<div className="mt-3">
+									<button class="btn btn-success w-100 py-2" type="submit">
+										Signin
+									</button>
+									<div className="row mx-auto mt-1">
+										<div className="col">
+											<hr></hr>
+										</div>
+										<div className="col">
+											<p className="text-light">New user</p>
+										</div>
+										<div className="col">
+											<hr></hr>
+										</div>
+									</div>
+
+									<NavLink className="btn btn-dark w-100 py-2" to="/signup">
+										Signup
+									</NavLink>
 								</div>
-								<button class="btn btn-dark w-100 py-2" type="submit">
-									Signin
-								</button>
 							</form>
 						</main>
 					</div>

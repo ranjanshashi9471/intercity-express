@@ -1,4 +1,4 @@
-import userImage from "../images/add-user.png";
+import userImage from "../images/user.png";
 
 export default function UserProfile(props) {
 	const user = props.userData;
@@ -16,11 +16,7 @@ export default function UserProfile(props) {
 						<div className="mt-3 pt-5">
 							<div className="position-relative ms-4">
 								<div className="image-container">
-									<img
-										className="w-100"
-										src="https://media.licdn.com/dms/image/D4D03AQGx1b6pCQwTxA/profile-displayphoto-shrink_800_800/0/1708761795816?e=1715817600&v=beta&t=vucxN9dXwQFpOzE1w2nE8G2d6SCIdkYDyTQhNKPjoIE"
-										alt="Avatar"
-									/>
+									<img className="w-100" src={userImage} alt="Avatar" />
 								</div>
 								<div className="image-background"></div>
 							</div>

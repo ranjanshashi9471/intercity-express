@@ -11,6 +11,7 @@ import Dashboard from "./Pages/Dashboard";
 import { useState } from "react";
 import Signup from "./Pages/Signup";
 import UserProfile from "./Pages/UserProfile";
+import Admin from "./Pages/Admin";
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -60,6 +61,7 @@ function App() {
 							</PrivateRoute>
 						}
 					/>
+					<Route path="/sys/admin" element={<Admin />} />
 				</Route>
 			</Routes>
 
