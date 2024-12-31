@@ -55,7 +55,7 @@ export default function Login(props) {
 				{/* <div className="col-lg-5 me-auto"></div> */}
 				<div className=" col-md-4 ms-auto my-4 p-4 bg-secondary rounded shadow bg-opacity-50 signin_form">
 					<div className="m-3">
-						<main class="form-signin w-100">
+						<main className="form-signin w-100">
 							<form
 								id="loginform"
 								onSubmit={(event) => {
@@ -70,12 +70,14 @@ export default function Login(props) {
 									width="72"
 									height="57"
 								/>
-								<h1 class="h3 mb-3 fw-normal text-warning">Please Signin</h1>
+								<h1 className="h3 mb-3 fw-normal text-warning">
+									Please Signin
+								</h1>
 
-								<div class="form-floating mb-3">
+								<div className="form-floating mb-3">
 									<select
 										required
-										class="form-control"
+										className="form-control"
 										name="userType"
 										id="selectOptions"
 										placeholder="Choose a User Type."
@@ -90,44 +92,44 @@ export default function Login(props) {
 									<label for="selectOptions">Type of user</label>
 								</div>
 
-								<div class="form-floating mb-3">
+								<div className="form-floating mb-3">
 									<input
 										name="email"
 										value={formData.email}
 										onChange={handleChange}
 										type="email"
-										class="form-control"
+										className="form-control"
 										id="floatingInput"
 										placeholder="name@example.com"
 									/>
 									<label for="floatingInput">Email address</label>
 								</div>
-								<div class="form-floating mt-3">
+								<div className="form-floating mt-3">
 									<input
 										type="password"
 										name="password"
 										value={formData.password}
 										onChange={handleChange}
-										class="form-control"
+										className="form-control"
 										id="floatingPassword"
 										placeholder="Password"
 									/>
 									<label for="floatingPassword">Password</label>
 								</div>
 
-								{/* <div class="form-check text-start my-3 ms-1">
+								{/* <div className="form-check text-start my-3 ms-1">
 									<input
-										class="form-check-input"
+										className="form-check-input"
 										type="checkbox"
 										value="remember-me"
 										id="flexCheckDefault"
 									/>
-									<label class="form-check-label" for="flexCheckDefault">
+									<label className="form-check-label" for="flexCheckDefault">
 										Remember me
 									</label>
 								</div> */}
 								<div className="mt-3">
-									<button class="btn btn-success w-100 py-2" type="submit">
+									<button className="btn btn-success w-100 py-2" type="submit">
 										Signin
 									</button>
 									<div className="row mx-auto mt-1">

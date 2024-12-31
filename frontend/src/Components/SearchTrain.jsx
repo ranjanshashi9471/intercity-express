@@ -68,10 +68,10 @@ export default function SearchTrain() {
 					<h3 className="text-light">Search for trains Between Stations.</h3>
 					<div>
 						<form onSubmit={handleSubmit}>
-							<div class="form-floating mx-auto mb-3">
+							<div className="form-floating mx-auto mb-3">
 								<select
 									required
-									class="form-control"
+									className="form-control"
 									name="startStn"
 									id="selectOptions"
 									placeholder="Choose start station"
@@ -88,10 +88,10 @@ export default function SearchTrain() {
 								</select>
 								<label for="selectOptions">Enter Start Stn</label>
 							</div>
-							<div class="form-floating mx-auto mb-3">
+							<div className="form-floating mx-auto mb-3">
 								<select
 									required
-									class="form-control"
+									className="form-control"
 									name="endStn"
 									id="selectOptions1"
 									placeholder="Choose destn. station"
@@ -108,16 +108,16 @@ export default function SearchTrain() {
 								</select>
 								<label for="selectOptions1">Enter End Stn</label>
 							</div>
-							<div class="form-floating mx-auto mb-3">
+							<div className="form-floating mx-auto mb-3">
 								<input
 									type="date"
-									class="form-control"
+									className="form-control"
 									id="floatingInput"
 									value={curr_date.toLocaleDateString("fr-CA")}
 								/>
 								<label for="floatingInput">Choose DOJ</label>
 							</div>
-							<button class="btn btn-dark w-100 py-2" type="submit">
+							<button className="btn btn-dark w-100 py-2" type="submit">
 								Find Trains
 							</button>
 						</form>

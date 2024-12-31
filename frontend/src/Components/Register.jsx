@@ -51,7 +51,7 @@ export default function Register() {
 			<div className="row mx-5 mt-4">
 				<div className=" col-lg-5 ms-auto bg-dark border rounded shadow bg-opacity-50 signin_form">
 					<div className="px-4 my-4">
-						<main class="form-signin w-100">
+						<main className="form-signin w-100">
 							<form
 								onSubmit={(event) => {
 									event.preventDefault();
@@ -68,11 +68,13 @@ export default function Register() {
 									/>
 								</div>
 
-								<h1 class="h3 mb-3 fw-normal text-warning">Please Signup</h1>
-								<div class="form-floating mb-3">
+								<h1 className="h3 mb-3 fw-normal text-warning">
+									Please Signup
+								</h1>
+								<div className="form-floating mb-3">
 									<select
 										required
-										class="form-control"
+										className="form-control"
 										name="userType"
 										value={formData.userType}
 										onChange={handleChange}
@@ -85,13 +87,13 @@ export default function Register() {
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>
-								<div class="form-floating">
+								<div className="form-floating">
 									<input
 										type="text"
 										name="name"
 										value={formData.name}
 										onChange={handleChange}
-										class="form-control"
+										className="form-control"
 										id="floatingName"
 										placeholder="Your name here"
 									/>
@@ -106,7 +108,7 @@ export default function Register() {
 											</label>
 											<select
 												required
-												class="form-control"
+												className="form-control"
 												name="gender"
 												value={formData.gender}
 												onChange={handleChange}
@@ -181,25 +183,25 @@ export default function Register() {
 									</div>
 								</div>
 
-								<div class="form-floating mt-3">
+								<div className="form-floating mt-3">
 									<input
 										type="email"
 										name="email"
 										value={formData.email}
 										onChange={handleChange}
-										class="form-control"
+										className="form-control"
 										id="floatingInput"
 										placeholder="name@example.com"
 									/>
 									<label for="floatingInput">Email address</label>
 								</div>
-								<div class="form-floating mt-3">
+								<div className="form-floating mt-3">
 									<input
 										name="password"
 										value={formData.password}
 										onChange={handleChange}
 										type="password"
-										class="form-control"
+										className="form-control"
 										id="floatingPassword"
 										placeholder="Password"
 									/>
@@ -207,7 +209,7 @@ export default function Register() {
 								</div>
 
 								<div className="mt-3">
-									<button class="btn btn-success w-100 py-2" type="submit">
+									<button className="btn btn-success w-100 py-2" type="submit">
 										Signup
 									</button>
 									<div className="row mx-auto mt-1">
