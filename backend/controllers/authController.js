@@ -4,12 +4,16 @@ const db = require("../config/db");
 const loginUser = async (req, res) => {
 	try {
 		const { email, password, userType } = req.body;
+		console.log(req.body);
 		const getUserQuery = `SELECT id, name, password from ${userType} WHERE email = '${email}'`;
+		let data = null;
+		try {
+			data = await db.query(getUserQuery);
+		} catch (error) {}
 
-		const data = await db.query(getUserQuery);
-		if (data[0][0].length == 0) {
+		if (data[0].length == 0) {
 			console.log("User doesn't exist!!");
-			res.status(400).send({
+			res.status(200).send({
 				success: false,
 				message: "You are not registered!!",
 			});
@@ -21,15 +25,15 @@ const loginUser = async (req, res) => {
 					res.status(200).send({
 						success: true,
 						message: "Successful Login",
-						userData: [
-							data[0][0].name,
-							email,
-							userType,
-							data[0][0].id.toString("hex"),
-						],
+						userData: {
+							id: data[0][0].id.toString("hex"),
+							name: data[0][0].name,
+							email: email,
+							userType: userType,
+						},
 					});
 				} else {
-					res.status(400).send({
+					res.status(200).send({
 						success: false,
 						message: "Please Check Email or Password!",
 					});
@@ -53,23 +57,19 @@ const loginUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
 	try {
-		const {
-			name,
-			email,
-			password,
-			userType,
-			gender,
-			age,
-			contact_no,
-			residence_city,
-		} = req.body;
+		const { name, email, password, userType, gender, age } = req.body;
+		// contact_no,
+		// residence_city,
+		const passengerType =
+			age >= 18 ? (age <= 60 ? "adult" : "senior-citizen") : "child";
+		console.log(req.body);
 
 		const chkExisting = await db.query(
 			`SELECT * FROM ${userType} WHERE email = '${email}'`
 		);
 		if (chkExisting[0].length > 0) {
 			//user exists
-			res.status(400).send({
+			res.status(200).send({
 				success: false,
 				messsage: "User already Exists!",
 			});
@@ -86,14 +86,14 @@ const registerUser = async (req, res) => {
 			}
 
 			if (hashedPassword) {
-				const userRegisterQuery = `INSERT INTO ${userType} values (UNHEX(REPLACE(UUID(),"-","")), '${name}', ${age}, '${email}','${gender}', '${hashedPassword}', '${contact_no}', '${residence_city}')`;
+				const userRegisterQuery = `INSERT INTO ${userType} values (UNHEX(REPLACE(UUID(),"-","")), '${name}', ${age}, '${email}','${gender}', '${hashedPassword}','${passengerType}')`;
 
 				try {
 					const result = await db.execute(userRegisterQuery);
 					console.log(result);
 					res.status(200).send({
 						success: true,
-						message: "success",
+						message: "Registered Successfully!!",
 					});
 				} catch (error) {
 					console.log(error);

@@ -23,10 +23,10 @@ const getStations = async (req, res) => {
 
 const searchTrain = async (req, res) => {
 	try {
-		console.log(req);
+		console.log(req.query);
 		const { startStn, endStn, date } = req.query;
-		const result = await connection.query(
-			`select t.* from trains t, (select * from routes where start_stn = '${startStn}' and end_stn = '${endStn}') dt where dt.route_no = t.route_no;`
+		const result = await db.query(
+			`select t.*, dt.* from trains t, (select * from routes where start_stn = '${startStn}' and end_stn = '${endStn}') dt where dt.route_no = t.route_no;`
 		);
 		if (result[0].length == 0) {
 			res.status(400).json({

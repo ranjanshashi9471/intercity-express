@@ -1,76 +1,56 @@
-import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import login from "../images/log-in.png";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 
 export default function Login(props) {
-	const [formData, setFormData] = useState({
-		email: "",
-		password: "",
-		userType: "passengers",
-	});
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm();
 
-	// const [data, setData] = useState([]);
 	const navigate = useNavigate();
 
-	function handleChange(event) {
-		const { value, name } = event.target;
-		setFormData((prevData) => {
-			return { ...prevData, [name]: value };
-		});
-	}
-
-	async function handleSubmit() {
-		await axios
-			.post("/login", {
+	async function submitHandler(data) {
+		try {
+			const response = await axios.post("/Auth/login", data, {
+				headers: {
+					"Content-Type": "application/json",
+				},
 				mode: "cors",
-				data: formData,
-			})
-			.then((res) => {
-				if (res.data.message === "passwordmismatch") {
-					toast.error("Wrong Password");
-				} else if (res.data.message === "usernotfound") {
-					toast.error("Unregistered User");
-				} else if (res.data.message === "errorcheckinguser") {
-					toast.error("Db error");
-				} else {
-					toast.success("Loggedin");
-					props.setLoggedIn(true);
-					// const { id, name, email, userType } = res.data.userData;
-					console.log(res.data.userData);
-					props.setServerUserData(res.data.userData);
-					navigate("/dashboard");
-				}
-			})
-			.catch((err) => {
-				// toast.error(err);
-				console.log(err);
 			});
+
+			if (!response.data.success) {
+				toast.error(response.data.message);
+			} else {
+				toast.success(response.data.message);
+				props.setLoggedIn(true);
+				props.setServerUserData({ ...response.data.userData });
+				navigate("/dashboard");
+			}
+		} catch (error) {
+			toast.error("Error Sending network request!!");
+			console.log(error);
+		}
 	}
 
 	return (
 		<div className="text-dark">
-			<div className="row m-3 mt-5">
-				{/* <div className="col-lg-5 me-auto"></div> */}
-				<div className=" col-md-4 ms-auto my-4 p-4 bg-secondary rounded shadow bg-opacity-50 signin_form">
-					<div className="m-3">
+			<div className="row mx-3">
+				<div className="col-sm-4 ms-auto my-3 p-4 bg-light border rounded shadow signin_form">
+					<div className="">
 						<main className="form-signin w-100">
-							<form
-								id="loginform"
-								onSubmit={(event) => {
-									event.preventDefault();
-									handleSubmit();
-								}}
-							>
+							<form id="loginform" onSubmit={handleSubmit(submitHandler)}>
 								<img
-									className="mb-4"
+									className="mb-3"
 									src={login}
 									alt=""
 									width="72"
 									height="57"
 								/>
-								<h1 className="h3 mb-3 fw-normal text-warning">
+								<h1 className="h3 mb-2 fw-normal text-warning">
 									Please Signin
 								</h1>
 
@@ -78,56 +58,56 @@ export default function Login(props) {
 									<select
 										required
 										className="form-control"
-										name="userType"
 										id="selectOptions"
 										placeholder="Choose a User Type."
-										onChange={handleChange}
-										value={formData.userType}
+										{...register("userType")}
 									>
 										<option value={"passengers"}>Passenger</option>
 										<option value={"travel_agents"}>Agent</option>
 										<option value={"staffs"}>Staff</option>
-										{/* <option value={"admin"}>Admin</option> */}
 									</select>
 									<label for="selectOptions">Type of user</label>
 								</div>
 
 								<div className="form-floating mb-3">
 									<input
-										name="email"
-										value={formData.email}
-										onChange={handleChange}
 										type="email"
 										className="form-control"
 										id="floatingInput"
 										placeholder="name@example.com"
+										{...register("email", {
+											required: true,
+											pattern: {
+												value:
+													/^[^\.\s][\w\-_.]*[^\.\s]@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
+												message: "Not a Valid Email",
+											},
+										})}
 									/>
 									<label for="floatingInput">Email address</label>
+									{errors.email && (
+										<p className="text-danger">{errors.email.message}</p>
+									)}
 								</div>
 								<div className="form-floating mt-3">
 									<input
 										type="password"
-										name="password"
-										value={formData.password}
-										onChange={handleChange}
-										className="form-control"
 										id="floatingPassword"
+										className="form-control"
 										placeholder="Password"
+										{...register("password", {
+											required: true,
+											minLength: { value: 7, message: "Min length 7" },
+											maxLength: { value: 15, message: "Max Length 15" },
+										})}
 									/>
 									<label for="floatingPassword">Password</label>
+									{errors.password && (
+										<p className="text-danger pt-2">
+											{errors.password.message}
+										</p>
+									)}
 								</div>
-
-								{/* <div className="form-check text-start my-3 ms-1">
-									<input
-										className="form-check-input"
-										type="checkbox"
-										value="remember-me"
-										id="flexCheckDefault"
-									/>
-									<label className="form-check-label" for="flexCheckDefault">
-										Remember me
-									</label>
-								</div> */}
 								<div className="mt-3">
 									<button className="btn btn-success w-100 py-2" type="submit">
 										Signin
@@ -137,7 +117,7 @@ export default function Login(props) {
 											<hr></hr>
 										</div>
 										<div className="col">
-											<p className="text-light">New user</p>
+											<p className="text-warning">New user</p>
 										</div>
 										<div className="col">
 											<hr></hr>

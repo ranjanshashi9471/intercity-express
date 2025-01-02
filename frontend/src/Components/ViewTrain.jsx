@@ -10,27 +10,17 @@ export default function ViewTrain(props) {
 						{props.data.route_name}{" "}
 					</span>
 					<span className="ms-1"> '{props.data.total_dist_km} KM'</span>
-					<span className="ms-1">Total time- {props.data.time_taken} </span>
+					<span className="ms-1">Total time- {props.data.journey_time} </span>
 				</h5>
 				<div className="card-body">
-					<h5 className="card-title">
+					<h5 className="card-title mb-0">
 						<span>{props.data.train_no} </span>
 						<span className="">{props.data.train_name} </span>
-						<span> {props.data.strtStn + " "}</span>-{" "}
-						<span>{props.data.destStn + " "}</span>
-						<span className="text-danger">
-							{" "}
-							DEPARTURE-
-							<span>{" " + props.data.EDT}</span>
-						</span>
-						<span className="text-success">
-							{" "}
-							ARRIVAL-
-							<span>{" " + props.data.EAT}</span>
-						</span>
+						<span> {props.data.start_stn + " "}</span>-{" "}
+						<span>{props.data.end_stn + " "}</span>
+						<span className="text-danger">{" " + props.data.depart_time}</span>
+						<span className="text-success">{" - " + props.data.arr_time}</span>
 					</h5>
-
-					<p className="card-text"></p>
 				</div>
 			</div>
 		</div>

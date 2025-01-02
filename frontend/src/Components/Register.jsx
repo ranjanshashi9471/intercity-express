@@ -1,63 +1,47 @@
-import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import login from "../images/add-user.png";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 export default function Register() {
-	const [formData, setFormData] = useState({
-		email: "",
-		password: "",
-		userType: "passengers",
-		name: "",
-		gender: "male",
-		age: 0,
-		contact_no: "",
-		residence_city: "",
-	});
+	const {
+		handleSubmit,
+		register,
+		formState: { errors },
+	} = useForm({});
+
 	const navigate = useNavigate();
 
-	function handleChange(event) {
-		const { value, name } = event.target;
-		setFormData((prevData) => {
-			return { ...prevData, [name]: value };
-		});
-	}
-
-	async function handleSubmit() {
-		await axios
-			.post("/signup", {
+	async function onSubmit(formData) {
+		console.log(formData);
+		try {
+			const response = await axios.post("/Auth/register", formData, {
 				mode: "cors",
-				data: formData,
-			})
-			.then((res) => {
-				if (res.data === "success") {
-					toast.success("Success");
-					navigate("/login");
-				} else if (res.data === "userexists!") {
-					toast.error("User Already Registered");
-				} else {
-					toast.error("Server Error!!");
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-				toast.error("Request Failed!");
+				headers: {
+					"Content-Type": "application/json",
+				},
 			});
+			console.log(response);
+			if (!response.data.success) {
+				toast.error(response.data.message);
+			} else {
+				toast.success(response.data.message);
+				navigate("/login");
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error("Error Sending Request!!");
+		}
 	}
 
 	return (
 		<div>
-			<div className="row mx-5 mt-4">
-				<div className=" col-lg-5 ms-auto bg-dark border rounded shadow bg-opacity-50 signin_form">
-					<div className="px-4 my-4">
-						<main className="form-signin w-100">
-							<form
-								onSubmit={(event) => {
-									event.preventDefault();
-									handleSubmit();
-								}}
-							>
+			<div className="row mx-5">
+				<div className=" col-lg-5 ms-auto border rounded shadow bg-light signin_form">
+					<div className="px-4">
+						<main className="form-signin w-100 my-3">
+							<form onSubmit={handleSubmit(onSubmit)}>
 								<div className="">
 									<img
 										className="mb-2"
@@ -68,21 +52,19 @@ export default function Register() {
 									/>
 								</div>
 
-								<h1 className="h3 mb-3 fw-normal text-warning">
+								<h1 className="h3 mb-2 fw-normal text-warning">
 									Please Signup
 								</h1>
 								<div className="form-floating mb-3">
 									<select
 										required
 										className="form-control"
-										name="userType"
-										value={formData.userType}
-										onChange={handleChange}
 										id="selectOptions"
 										placeholder="Choose a User Type."
+										{...register("userType", { required: true })}
 									>
 										<option value={"passengers"}>Passenger</option>
-										<option value={"travel_agents"}>Agent</option>
+										{/* <option value={"travel_agents"}>Agent</option> */}
 										{/* <option value={"staffs"}>Staff</option> */}
 									</select>
 									<label for="selectOptions">Type of user</label>
@@ -90,14 +72,19 @@ export default function Register() {
 								<div className="form-floating">
 									<input
 										type="text"
-										name="name"
-										value={formData.name}
-										onChange={handleChange}
 										className="form-control"
 										id="floatingName"
 										placeholder="Your name here"
+										{...register("name", {
+											required: true,
+											minLength: { value: 3, message: "Min Lenngth is 3" },
+											maxLength: { value: 20, message: "Max Length is 20" },
+										})}
 									/>
 									<label htmlfor="floatingName">Name</label>
+									{errors.name && (
+										<p className="text-danger">{errors.name.message}</p>
+									)}
 								</div>
 
 								<div className="row mt-3">
@@ -109,17 +96,14 @@ export default function Register() {
 											<select
 												required
 												className="form-control"
-												name="gender"
-												value={formData.gender}
-												onChange={handleChange}
 												id="gender"
 												placeholder="Your Gender."
+												{...register("gender", { required: true })}
 											>
 												<option value={"male"}>Male</option>
 												<option value={"female"}>Female</option>
 												<option value={"others"}>Others</option>
 											</select>
-											{/* <label for="selectGender">Gender</label> */}
 										</div>
 									</div>
 
@@ -130,19 +114,17 @@ export default function Register() {
 											</label>
 
 											<input
-												type="number"
-												name="age"
-												id="age"
-												placeholder="Enter your Last name"
-												className="form-control"
-												onChange={handleChange}
-												value={formData.age}
 												required
+												type="number"
+												id="age"
+												placeholder="Enter your age"
+												className="form-control"
+												{...register("age")}
 											/>
 										</div>
 									</div>
 								</div>
-								<div className="row mt-3">
+								{/* <div className="row mt-3">
 									<div className="col-md-6 me-auto">
 										<div className="form-control">
 											<label className="form-label" htmlFor="residence">
@@ -181,52 +163,52 @@ export default function Register() {
 											/>
 										</div>
 									</div>
-								</div>
+								</div> */}
 
-								<div className="form-floating mt-3">
+								<div className="form-floating mt-2">
 									<input
 										type="email"
-										name="email"
-										value={formData.email}
-										onChange={handleChange}
 										className="form-control"
 										id="floatingInput"
 										placeholder="name@example.com"
+										{...register("email", {
+											required: true,
+											pattern: {
+												value:
+													/^[^\.\s][\w\-_.]*[^\.\s]@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
+												message: "Not a Valid Email",
+											},
+										})}
 									/>
 									<label for="floatingInput">Email address</label>
+									{errors.email && (
+										<p className="text-danger">{errors.email.message}</p>
+									)}
 								</div>
 								<div className="form-floating mt-3">
 									<input
-										name="password"
-										value={formData.password}
-										onChange={handleChange}
 										type="password"
 										className="form-control"
 										id="floatingPassword"
 										placeholder="Password"
+										{...register("password", {
+											required: true,
+											minLength: { value: 7, message: "Min length 7" },
+											maxLength: { value: 15, message: "Max Length 15" },
+										})}
 									/>
 									<label for="floatingPassword">Password</label>
+									{errors.password && (
+										<p className="text-danger">{errors.password.message}</p>
+									)}
 								</div>
 
 								<div className="mt-3">
 									<button className="btn btn-success w-100 py-2" type="submit">
 										Signup
 									</button>
-									<div className="row mx-auto mt-1">
-										<div className="col-lg-4 text-light">
-											<hr></hr>
-										</div>
-										<div className="col-lg-4 mt-1">
-											<p className="text-warning">Already registered</p>
-										</div>
-										<div className="col text-light">
-											<hr></hr>
-										</div>
-									</div>
-									<NavLink
-										className="btn btn-outline-light w-100 py-2"
-										to="/login"
-									>
+									<p className="text-warning mt-2">Already registered</p>
+									<NavLink className="btn btn-dark w-100 py-2" to="/login">
 										Signin
 									</NavLink>
 								</div>

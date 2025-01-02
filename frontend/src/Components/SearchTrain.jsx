@@ -16,14 +16,15 @@ export default function SearchTrain() {
 	async function handleSubmit(event) {
 		event.preventDefault();
 		await axios
-			.post("/searchtrain", {
+			.get("/info/trains", {
 				method: "cors",
-				data: searchData,
+				params: searchData,
 			})
 			.then((res) => {
-				if (res.data.message === "Success") {
-					toast.success("Success!!");
+				if (res.data.success) {
+					toast.success(res.data.message);
 					setTrainData(res.data.trainData);
+					console.log(res.data.trainData);
 				} else {
 					toast.error(res.data.message);
 				}
@@ -40,12 +41,13 @@ export default function SearchTrain() {
 
 	async function getStations() {
 		await axios
-			.get("/stations", {
+			.get("/info/stations", {
 				method: "cors",
 			})
 			.then((res) => {
-				if (res.data.message === "success") {
-					setStnData(res.data.stations);
+				console.log(res);
+				if (res.data.success) {
+					setStnData(res.data.data);
 					toast.success("Fetched Stations");
 				} else {
 					toast.error("Database Error!!");
@@ -62,9 +64,9 @@ export default function SearchTrain() {
 	}, []);
 
 	return (
-		<div className="row mt-3">
+		<div className="row">
 			<div className="col-lg-4 mx-auto">
-				<div className="col-lg-12 p-5 rounded bg-secondary border shadow bg-opacity-50 mt-5">
+				<div className="col-lg-12 p-5 rounded bg-secondary border shadow bg-opacity-50 mt-2">
 					<h3 className="text-light">Search for trains Between Stations.</h3>
 					<div>
 						<form onSubmit={handleSubmit}>

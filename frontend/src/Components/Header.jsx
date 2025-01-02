@@ -39,15 +39,15 @@ export default function Header(props) {
 								<NavLink className="nav-link" to="#"></NavLink>
 							</li> */}
 							<li className="nav-item dropdown">
-								<a
+								<NavLink
 									className="nav-link dropdown-toggle"
-									href="#"
+									to="#"
 									role="button"
 									data-bs-toggle="dropdown"
 									aria-expanded="false"
 								>
 									{props.loggedIn ? props.serverUserData.name : "Username"}
-								</a>
+								</NavLink>
 								<ul className="dropdown-menu bg-dark bg-opacity-75">
 									{props.loggedIn ? (
 										<ShowLogout setLoggedIn={props.setLoggedIn} />
